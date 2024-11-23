@@ -1,37 +1,30 @@
-# TypeScript Library Starter
+# json-zod-schema
 
 ![NPM](https://img.shields.io/npm/l/@gjuchault/typescript-library-starter)
 ![NPM](https://img.shields.io/npm/v/@gjuchault/typescript-library-starter)
-![GitHub Workflow Status](https://github.com/gjuchault/typescript-library-starter/actions/workflows/typescript-library-starter.yml/badge.svg?branch=main)
 
-Yet another (opinionated) TypeScript library starter template.
 
-If you're looking for a backend service starter, check out my [typescript-service-starter](https://github.com/gjuchault/typescript-service-starter)
 
-## Opinions and limitations
-
-1. Relies as much as possible on each included library's defaults
-2. Only relies on GitHub Actions
-3. Does not include documentation generation
+## Opinions and assumptions
+1. The clients of this SDK have to setup `zod` in order to use the SDK:
+	- To prevent direct dependecies between the frontend/backend apps, the clients of the SDK can create their own internal NPM library that includes all the schemas needed between frontend and backend, by this way they don't have to handle the schema.
+	- Separating out the schema from frontend/backend can help to achieve data model sharing.
 
 ## Getting started
 
-1. `npx degit gjuchault/typescript-library-starter my-project` or click on the `Use this template` button on GitHub!
-2. `cd my-project`
-3. `npm install`
-4. `git init` (if you used degit)
-5. `node --run setup`
+1. `npm install`
+2. `npm test`
 
 To enable deployment, you will need to:
 
 1. Set up the `NPM_TOKEN` secret in GitHub Actions ([Settings > Secrets > Actions](https://github.com/gjuchault/typescript-library-starter/settings/secrets/actions))
 2. Give `GITHUB_TOKEN` write permissions for GitHub releases ([Settings > Actions > General](https://github.com/gjuchault/typescript-library-starter/settings/actions) > Workflow permissions)
 
-## Features
+## Environment
 
 ### Node.js, npm version
 
-TypeScript Library Starter relies on [Volta](https://volta.sh/) to ensure the Node.js version is consistent across developers. It's also used in the GitHub workflow file.
+Relies on [Volta](https://volta.sh/) to ensure the Node.js version is consistent across developers. It's also used in the GitHub workflow file.
 
 ### TypeScript
 
@@ -46,7 +39,7 @@ Commands:
 
 ### Tests
 
-TypeScript Library Starter uses [Node.js's native test runner](https://nodejs.org/api/test.html). Coverage is done using [c8](https://github.com/bcoe/c8) but will switch to Node.js's one once out.
+Uses [Node.js's native test runner](https://nodejs.org/api/test.html). Coverage is done using [c8](https://github.com/bcoe/c8) but will switch to Node.js's one once out.
 
 Commands:
 
