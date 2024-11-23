@@ -3,7 +3,7 @@ import { Schema } from "../schema.ts";
 import { z } from "zod";
 import { deepStrictEqual } from "node:assert/strict";
 import { ValidationError } from "../error.ts";
-import { equal } from "node:assert";
+import { equal, fail } from "node:assert/strict";
 
 await describe("Schema", async () => {
 	await describe("given literal type", async () => {
@@ -41,6 +41,28 @@ await describe("Schema", async () => {
 				});
 				const result = Schema.get(customSchema, jsonString);
 				deepStrictEqual(result, mockUser);
+			});
+		});
+	});
+
+	await describe("given obj", async () => {
+		const mockUser = {
+			firstName: "John",
+		};
+
+		const jsonString = JSON.stringify(mockUser);
+		await describe("when decoded with custom schema and missing fields", async () => {
+			await it("should return parsed result", () => {
+				const customSchema = z.object({
+					firstName: z.string().nullable(),
+					lastName: z.string().nullable(),
+				});
+				try {
+					const result = Schema.get(customSchema, jsonString);
+					fail("This should not run");
+				} catch (e) {
+					equal(e as ValidationError, ValidationError.Enum.InvalidSchema);
+				}
 			});
 		});
 	});
@@ -112,6 +134,68 @@ await describe("Schema", async () => {
 		});
 	});
 
+	await describe("given array of objects (valid)", async () => {
+		const arr = [
+			{
+				teacher: {
+					id: "t1",
+					name: "Mr. Smith",
+					subject: "Mathematics",
+					students: [
+						{
+							id: "s1",
+							name: "Alice",
+							grade: 95,
+						},
+						{
+							id: "s2",
+							name: "Bob",
+							grade: 88,
+						},
+					],
+				},
+			},
+			{
+				teacher: {
+					id: "t1",
+					name: "Mr. Smith",
+					subject: "Physics",
+					students: [
+						{
+							id: "s2",
+							name: "Bob",
+							grade: 92,
+						},
+						{
+							id: "s3",
+							name: "Charlie",
+							grade: 85,
+						},
+					],
+				},
+			},
+		];
+
+		const jsonString = JSON.stringify(arr);
+		await describe("when decoded with diff schema", async () => {
+			await it("should not return parsed result, and throws ValidationError.InvalidSchema", () => {
+				const customSchema = z.array(
+					z.object({
+						hello: z.object({
+							id: z.string(),
+						}),
+					}),
+				);
+				try {
+					const result = Schema.get(customSchema, jsonString);
+					fail("This should not run");
+				} catch (e) {
+					equal(e as ValidationError, ValidationError.Enum.InvalidSchema);
+				}
+			});
+		});
+	});
+
 	await describe("given array of objects (invalid)", async () => {
 		const jsonString = `
 		[
@@ -157,7 +241,7 @@ await describe("Schema", async () => {
 		`;
 
 		await describe("when decoded with custom schema", async () => {
-			await it("should not return parsed result, and throw ValidationError.InvalidJSON", () => {
+			await it("should return null", () => {
 				const customSchema = z.array(
 					z.object({
 						teacher: z.object({
@@ -174,11 +258,8 @@ await describe("Schema", async () => {
 						}),
 					}),
 				);
-				try {
-					const result = Schema.get(customSchema, jsonString);
-				} catch (e) {
-					equal(e as ValidationError, ValidationError.Enum.InvalidJSON);
-				}
+				const result = Schema.get(customSchema, jsonString);
+				deepStrictEqual(result, null);
 			});
 		});
 	});
