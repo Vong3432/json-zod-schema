@@ -1,6 +1,3 @@
-import { bar } from "./bar.ts";
-import { foo } from "./foo.ts";
+import { Schema } from "./schema.ts";
 
-export function foobar(a: number, b: number) {
-	return foo().repeat(a).length + bar().repeat(b).length;
-}
+export { Schema };
