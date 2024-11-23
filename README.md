@@ -7,7 +7,7 @@
 
 ## Opinions and assumptions
 1. The clients of this SDK have to setup `zod` in order to use the SDK:
-	- To prevent direct dependecies between the frontend/backend apps, the clients of the SDK can create their own internal NPM library that includes all the schemas needed between frontend and backend, by this way they don't have to handle the schema.
+	- To prevent direct dependencies between the frontend/backend apps, the clients of the SDK can create their own internal NPM library that includes all the schemas needed between frontend and backend, by this way they don't have to handle the schema.
 	- Separating out the schema from frontend/backend can help to achieve data model sharing.
 
 ## Getting started
