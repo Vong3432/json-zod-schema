@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import { isJson } from "./validator/isJSON.ts";
+import { ValidationError } from "./error.ts";
 
 export const Schema = {
 	/**
@@ -9,7 +10,11 @@ export const Schema = {
 	get<T>(zodType: z.ZodType<T>, jsonString: string): T | null {
 		if (isJson(jsonString)) {
 			const obj = JSON.parse(jsonString);
-			return zodType.safeParse(obj).data ?? null;
+			const parsed = zodType.safeParse(obj).data;
+			if (parsed) {
+				return parsed;
+			}
+			throw ValidationError.Enum.InvalidSchema;
 		}
 		return zodType.safeParse(jsonString).data ?? null;
 	},
