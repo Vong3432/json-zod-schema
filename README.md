@@ -20,6 +20,32 @@ To enable deployment, you will need to:
 1. Set up the `NPM_TOKEN` secret in GitHub Actions ([Settings > Secrets > Actions](https://github.com/gjuchault/typescript-library-starter/settings/secrets/actions))
 2. Give `GITHUB_TOKEN` write permissions for GitHub releases ([Settings > Actions > General](https://github.com/gjuchault/typescript-library-starter/settings/actions) > Workflow permissions)
 
+## How to use this package?
+1. Install package
+```
+npm i json-zod-schema
+npm i zod
+```
+
+2.
+```
+import { Schema } from "json-zod-schema";
+import { z } from "zod";
+
+const jsonString = JSON.stringify('{"firstName": "John", "lastName": "Doe"}');
+
+    try {
+        const customSchema = z.object({
+            firstName: z.string().nullable(),
+            lastName: z.string().nullable(),
+        });
+        const user = Schema.get(customSchema, jsonString);
+    } catch(e) {
+        console.log(e);
+    }
+```
+
+
 ## Environment
 
 ### Node.js, npm version
