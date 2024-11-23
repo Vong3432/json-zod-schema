@@ -1,9 +1,9 @@
-import { describe, it } from "node:test";
-import { Schema } from "../schema.ts";
-import { z } from "zod";
 import { deepStrictEqual } from "node:assert/strict";
-import { ValidationError } from "../error.ts";
 import { equal, fail } from "node:assert/strict";
+import { describe, it } from "node:test";
+import { z } from "zod";
+import { ValidationError } from "../error.ts";
+import { Schema } from "../schema.ts";
 
 await describe("Schema", async () => {
 	await describe("given literal type", async () => {
@@ -58,7 +58,7 @@ await describe("Schema", async () => {
 					lastName: z.string().nullable(),
 				});
 				try {
-					const result = Schema.get(customSchema, jsonString);
+					const _result = Schema.get(customSchema, jsonString);
 					fail("This should not run");
 				} catch (e) {
 					equal(e as ValidationError, ValidationError.Enum.InvalidSchema);
@@ -187,7 +187,7 @@ await describe("Schema", async () => {
 					}),
 				);
 				try {
-					const result = Schema.get(customSchema, jsonString);
+					const _result = Schema.get(customSchema, jsonString);
 					fail("This should not run");
 				} catch (e) {
 					equal(e as ValidationError, ValidationError.Enum.InvalidSchema);

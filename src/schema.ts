@@ -1,6 +1,6 @@
 import type { z } from "zod";
-import { isJson } from "./validator/isJSON.ts";
 import { ValidationError } from "./error.ts";
+import { isJson } from "./validator/isJSON.ts";
 
 export const Schema = {
 	/**
