@@ -5,7 +5,7 @@ import { isJson } from "./validator/isJSON.ts";
 export const Schema = {
 	/**
 	 *
-	 * @throws {ValidationError}
+	 * @throws ValidationError
 	 */
 	get<T>(zodType: z.ZodType<T>, jsonString: string): T | null {
 		if (isJson(jsonString)) {
